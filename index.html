@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Futuristic AI Assistant</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+
+  <style>
+    :root {
+      --bg-1: #050816;
+      --bg-2: #0b1023;
+      --card: rgba(14, 22, 45, 0.75);
+      --line: rgba(96, 165, 250, 0.25);
+      --cyan: #38bdf8;
+      --blue: #60a5fa;
+      --violet: #8b5cf6;
+      --text: #e5f3ff;
+      --muted: #8ca3bf;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 28%),
+        radial-gradient(circle at bottom center, rgba(96, 165, 250, 0.1), transparent 35%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .grid-overlay::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 90%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .navbar {
+      backdrop-filter: blur(14px);
+      background: rgba(3, 7, 18, 0.55) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 10;
+    }
+
+    .navbar-brand {
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #fff !important;
+    }
+
+    .brand-dot {
+      color: var(--cyan);
+      text-shadow: 0 0 12px var(--cyan);
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 110px 0 70px;
+    }
+
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.08);
+      color: #c8ecff;
+      font-size: 0.9rem;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.08);
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.04;
+      margin-top: 18px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--cyan), #ffffff, var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .btn-future {
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: linear-gradient(135deg, rgba(56,189,248,0.18), rgba(139,92,246,0.18));
+      color: #fff;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+      transition: 0.3s ease;
+    }
+
+    .btn-future:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.28);
+      color: #fff;
+    }
+
+    .btn-outline-future {
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #dbeafe;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn-outline-future:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .glass-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-panel {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -60px;
+      top: -60px;
+      background: radial-gradient(circle, rgba(56,189,248,0.25), transparent 65%);
+      border-radius: 50%;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .mini-box {
+      flex: 1 1 30%;
+      min-width: 120px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .mini-box .label {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .mini-box .value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .ai-ring {
+      width: 260px;
+      height: 260px;
+      margin: 20px auto;
+      border-radius: 50%;
+      position: relative;
+      background:
+        radial-gradient(circle at center, rgba(56,189,248,0.16) 0, rgba(56,189,248,0.05) 35%, transparent 60%),
+        conic-gradient(from 0deg, rgba(56,189,248,0.9), rgba(139,92,246,0.5), rgba(56,189,248,0.9));
+      animation: rotateRing 8s linear infinite;
+      box-shadow: 0 0 35px rgba(56,189,248,0.22);
+    }
+
+    .ai-ring::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #09111f, #0d1528);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .ai-ring::after {
+      content: "AI";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 3rem;
+      font-weight: 800;
+      color: #dff6ff;
+      text-shadow: 0 0 18px rgba(56,189,248,0.6);
+      animation: pulseGlow 2.2s ease-in-out infinite;
+    }
+
+    @keyframes rotateRing {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.04); }
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      max-width: 700px;
+      margin-bottom: 36px;
+    }
+
+    .feature-card,
+    .module-card,
+    .timeline-card,
+    .control-card {
+      height: 100%;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before,
+    .module-card::before,
+    .timeline-card::before,
+    .control-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(56,189,248,0.07), transparent, rgba(139,92,246,0.06));
+      pointer-events: none;
+    }
+
+    .icon-box {
+      width: 58px;
+      height: 58px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.22);
+      color: var(--cyan);
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+      box-shadow: 0 0 20px rgba(56,189,248,0.12);
+    }
+
+    .card-title-custom {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card-text-custom {
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 0;
+    }
+
+    .highlight-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent);
+      margin: 70px 0;
+    }
+
+    .hud-panel {
+      padding: 28px;
+    }
+
+    .progress {
+      height: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, var(--cyan), var(--violet));
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      background: rgba(52, 211, 153, 0.12);
+      color: #b9ffe4;
+      border: 1px solid rgba(52, 211, 153, 0.25);
+    }
+
+    .voice-wave {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 6px;
+      height: 70px;
+      margin-top: 16px;
+    }
+
+    .voice-wave span {
+      width: 8px;
+      border-radius: 999px;
+      background: linear-gradient(to top, var(--cyan), #d8f5ff);
+      animation: wave 1.2s ease-in-out infinite;
+      box-shadow: 0 0 12px rgba(56,189,248,0.4);
+    }
+
+    .voice-wave span:nth-child(1) { height: 18px; animation-delay: 0s; }
+    .voice-wave span:nth-child(2) { height: 44px; animation-delay: 0.15s; }
+    .voice-wave span:nth-child(3) { height: 28px; animation-delay: 0.3s; }
+    .voice-wave span:nth-child(4) { height: 54px; animation-delay: 0.45s; }
+    .voice-wave span:nth-child(5) { height: 24px; animation-delay: 0.6s; }
+    .voice-wave span:nth-child(6) { height: 46px; animation-delay: 0.75s; }
+    .voice-wave span:nth-child(7) { height: 20px; animation-delay: 0.9s; }
+
+    @keyframes wave {
+      0%, 100% { transform: scaleY(0.65); opacity: 0.7; }
+      50% { transform: scaleY(1.15); opacity: 1; }
+    }
+
+    .footer {
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .small-muted {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .scanner-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(56,189,248,0.8), transparent);
+      box-shadow: 0 0 12px rgba(56,189,248,0.5);
+      animation: scan 4s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes scan {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .section-space {
+      padding: 30px 0 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 991px) {
+      .hero {
+        padding-top: 90px;
+      }
+
+      .hero-title {
+        font-size: 2.4rem;
+      }
+
+      .ai-ring {
+        width: 210px;
+        height: 210px;
+      }
+    }
+  </style>
+</head>
+<body class="grid-overlay">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        NEXUS<span class="brand-dot">.</span>AI
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="#systems">Systems</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#modules">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" href="#control">Control</a></li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a href="#launch" class="btn btn-future rounded-pill px-4">Initialize</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <div class="tag-pill">
+            <i class="bi bi-cpu-fill"></i>
+            FUTURISTIC AI INTERFACE • JARVIS / ALTON / FRIDAY STYLE
+          </div>
+
+          <h1 class="hero-title">
+            Build your own
+            <span class="gradient-text">futuristic assistant</span>
+            dashboard
+          </h1>
+
+          <p class="hero-subtitle">
+            A cinematic AI control surface with holographic feel, voice modules,
+            security layers, live diagnostics, and mission-control panels inspired
+            by next-gen virtual assistants.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a href="#features" class="btn btn-future btn-lg rounded-pill px-4">
+              <i class="bi bi-lightning-charge-fill me-2"></i>Explore Features
+            </a>
+            <a href="#control" class="btn btn-outline-future btn-lg rounded-pill px-4">
+              <i class="bi bi-mic-fill me-2"></i>Voice Control
+            </a>
+          </div>
+
+          <div class="row g-3 mt-4">
+            <div class="col-6 col-md-4">
+              <div class="glass-card p-3">
+                <div class="stat-number">99.2%</div>
+                <div class="stat-label">System Accuracy</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="glass-card p-3">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">AI Monitoring</div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="glass-card p-3">
+                <div class="stat-number">3 Core</div>
+                <div class="stat-label">Assistant Modes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="glass-card hero-panel">
+            <div class="scanner-line"></div>
+
+            <div class="status-row">
+              <div class="mini-box">
+                <div class="label">Power Core</div>
+                <div class="value text-info">ONLINE</div>
+              </div>
+              <div class="mini-box">
+                <div class="label">Threat Shield</div>
+                <div class="value text-success">ACTIVE</div>
+              </div>
+              <div class="mini-box">
+                <div class="label">Voice Link</div>
+                <div class="value text-warning">READY</div>
+              </div>
+            </div>
+
+            <div class="ai-ring"></div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div>
+                <h5 class="mb-1">Neural Core Interface</h5>
+                <div class="small-muted">Adaptive command engine with live response loop</div>
+              </div>
+              <span class="status-badge">
+                <i class="bi bi-broadcast-pin"></i> Synced
+              </span>
+            </div>
+
+            <div class="mt-4">
+              <div class="d-flex justify-content-between mb-2 small-muted">
+                <span>Neural Processing</span>
+                <span>87%</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 87%"></div>
+              </div>
+            </div>
+
+            <div class="voice-wave">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="highlight-line"></div>
+  </div>
+
+  <!-- Systems -->
+  <section class="section-space" id="systems">
+    <div class="container">
+      <h2 class="section-title">AI Systems</h2>
+      <p class="section-subtitle">
+        Three operational personalities for different tasks and response modes.
+      </p>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="glass-card feature-card">
+            <div class="icon-box">
+              <i class="bi bi-robot"></i>
+            </div>
+            <h3 class="card-title-custom">JARVIS Mode</h3>
+            <p class="card-text-custom">
+              Premium executive assistant interface for automation, voice commands,
+              analytics, task orchestration, and mission-level awareness.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="glass-card feature-card">
+            <div class="icon-box">
+              <i class="bi bi-shield-lock"></i>
+            </div>
+            <h3 class="card-title-custom">ALTON Mode</h3>
+            <p class="card-text-custom">
+              Tactical and defense-oriented mode focused on threat analysis,
+              access control, security alerts, and real-time system protection.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="glass-card feature-card">
+            <div class="icon-box">
+              <i class="bi bi-stars"></i>
+            </div>
+            <h3 class="card-title-custom">FRIDAY Mode</h3>
+            <p class="card-text-custom">
+              Friendly and highly adaptive companion mode for daily workflow,
+              reminders, smart suggestions, and elegant conversational UX.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section-space" id="features">
+    <div class="container">
+      <h2 class="section-title">Core Features</h2>
+      <p class="section-subtitle">
+        Advanced modules designed to make the interface feel like a real futuristic AI console.
+      </p>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-xl-3">
+          <div class="glass-card module-card">
+            <div class="icon-box"><i class="bi bi-mic-fill"></i></div>
+            <h4 class="card-title-custom">Voice Activation</h4>
+            <p class="card-text-custom">
+              Trigger commands through wake words, natural language, and continuous audio detection.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="glass-card module-card">
+            <div class="icon-box"><i class="bi bi-bar-chart-line-fill"></i></div>
+            <h4 class="card-title-custom">Live Analytics</h4>
+            <p class="card-text-custom">
+              Display device telemetry, CPU load, environment signals, or project dashboards in real time.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="glass-card module-card">
+            <div class="icon-box"><i class="bi bi-grid-1x2-fill"></i></div>
+            <h4 class="card-title-custom">Holographic UI</h4>
+            <p class="card-text-custom">
+              Glassmorphism cards, neon glow, scan lines, rings, and panel transitions for sci-fi feel.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="glass-card module-card">
+            <div class="icon-box"><i class="bi bi-lightning-charge-fill"></i></div>
+            <h4 class="card-title-custom">Automation Engine</h4>
+            <p class="card-text-custom">
+              Connect tasks, alerts, schedules, and intelligent workflows into one command center.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HUD Panel -->
+  <section class="section-space" id="modules">
+    <div class="container">
+      <div class="row g-4 align-items-stretch">
+        <div class="col-lg-7">
+          <div class="glass-card hud-panel h-100">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+              <div>
+                <h3 class="mb-1">Mission HUD</h3>
+                <div class="small-muted">Real-time operational visualization</div>
+              </div>
+              <span class="status-badge">
+                <i class="bi bi-check2-circle"></i> All Systems Nominal
+              </span>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="glass-card p-3 h-100">
+                  <div class="small-muted mb-2">Energy Grid</div>
+                  <div class="progress mb-3">
+                    <div class="progress-bar" style="width: 78%"></div>
+                  </div>
+                  <div class="small-muted">Stable quantum distribution across active modules.</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="glass-card p-3 h-100">
+                  <div class="small-muted mb-2">Defense Layer</div>
+                  <div class="progress mb-3">
+                    <div class="progress-bar" style="width: 92%"></div>
+                  </div>
+                  <div class="small-muted">Threat detection pipeline and shield logic are active.</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="glass-card p-3 h-100">
+                  <div class="small-muted mb-2">Cognitive Mesh</div>
+                  <div class="progress mb-3">
+                    <div class="progress-bar" style="width: 84%"></div>
+                  </div>
+                  <div class="small-muted">Natural language reasoning and context sync are optimized.</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="glass-card p-3 h-100">
+                  <div class="small-muted mb-2">Remote Link</div>
+                  <div class="progress mb-3">
+                    <div class="progress-bar" style="width: 69%"></div>
+                  </div>
+                  <div class="small-muted">External systems connected with secure routing channel.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="glass-card timeline-card h-100">
+            <h3 class="mb-3">Feature Roadmap</h3>
+
+            <div class="mb-4">
+              <h6 class="text-info">Phase 01</h6>
+              <p class="card-text-custom">Landing page, animated hero, glass cards, Bootstrap layout, dark futuristic theme.</p>
+            </div>
+
+            <div class="mb-4">
+              <h6 class="text-info">Phase 02</h6>
+              <p class="card-text-custom">Voice input, command terminal, AI chat panel, real-time dashboard widgets.</p>
+            </div>
+
+            <div class="mb-4">
+              <h6 class="text-info">Phase 03</h6>
+              <p class="card-text-custom">Backend integration, APIs, smart automations, authentication, and notifications.</p>
+            </div>
+
+            <div>
+              <h6 class="text-info">Phase 04</h6>
+              <p class="card-text-custom">3D effects, WebGL backgrounds, device sync, robotics control, and live sensors.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control -->
+  <section class="section-space" id="control">
+    <div class="container">
+      <h2 class="section-title">Command Control</h2>
+      <p class="section-subtitle">
+        Example control center for launching futuristic assistant actions.
+      </p>
+
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="glass-card control-card">
+            <div class="icon-box"><i class="bi bi-terminal-fill"></i></div>
+            <h4 class="card-title-custom">Command Terminal</h4>
+            <p class="card-text-custom mb-4">
+              Execute system routines, connect tools, and manage intelligent workflows.
+            </p>
+            <button class="btn btn-future rounded-pill px-4 w-100">Run Diagnostics</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="glass-card control-card">
+            <div class="icon-box"><i class="bi bi-camera-video-fill"></i></div>
+            <h4 class="card-title-custom">Vision Module</h4>
+            <p class="card-text-custom mb-4">
+              Add object detection, camera feed analysis, or smart recognition panels.
+            </p>
+            <button class="btn btn-future rounded-pill px-4 w-100">Activate Vision</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="glass-card control-card">
+            <div class="icon-box"><i class="bi bi-broadcast"></i></div>
+            <h4 class="card-title-custom">Remote Sync</h4>
+            <p class="card-text-custom mb-4">
+              Connect servers, IoT devices, cloud APIs, or home automation endpoints.
+            </p>
+            <button class="btn btn-future rounded-pill px-4 w-100">Start Sync</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Launch -->
+  <section class="section-space pb-5" id="launch">
+    <div class="container">
+      <div class="glass-card p-4 p-lg-5 text-center">
+        <h2 class="section-title mb-3">Initialize the Future</h2>
+        <p class="section-subtitle mx-auto mb-4">
+          This is a Bootstrap-only futuristic landing page starter. You can now connect it
+          with chat UI, voice assistant, API backend, login system, or live telemetry.
+        </p>
+        <a href="#" class="btn btn-future btn-lg rounded-pill px-5">
+          <i class="bi bi-power me-2"></i>Boot Sequence
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+      <div>© 2026 NEXUS.AI Interface</div>
+      <div class="small-muted">Designed with Bootstrap • Futuristic Glass UI</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Small effect: change badge text on button clicks
+    document.querySelectorAll(".btn-future").forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        if (this.textContent.includes("Run Diagnostics")) {
+          e.preventDefault();
+          this.innerHTML = '<i class="bi bi-check2-circle me-2"></i>Diagnostics Complete';
+        }
+        if (this.textContent.includes("Activate Vision")) {
+          e.preventDefault();
+          this.innerHTML = '<i class="bi bi-eye-fill me-2"></i>Vision Online';
+        }
+        if (this.textContent.includes("Start Sync")) {
+          e.preventDefault();
+          this.innerHTML = '<i class="bi bi-cloud-check-fill me-2"></i>Sync Active';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
