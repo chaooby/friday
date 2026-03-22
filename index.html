@@ -1,178 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iron Man Suits Gallery</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron Man Suits</title>
 
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
     body {
-      background: linear-gradient(135deg, #1a0000, #000000);
+      background: #0b0000;
       color: white;
-      font-family: Arial, sans-serif;
+      font-family: Arial;
     }
 
-    /* HEADER */
-    .hero {
-      padding: 60px 20px 30px;
+    h1 {
+      color: gold;
       text-align: center;
+      margin: 30px 0;
     }
 
-    .hero h1 {
-      font-weight: 800;
-      color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    .card {
+      background: #1a0000;
+      border: 1px solid gold;
     }
 
-    .hero p {
+    .card-title {
+      color: gold;
+      font-weight: bold;
+    }
+
+    .card-text {
       color: #fca5a5;
     }
 
-    /* CARD */
-    .suit-card {
-      background: linear-gradient(145deg, #3b0000, #1a0000);
-      border: 1px solid #ffd70033;
-      border-radius: 15px;
-      overflow: hidden;
-      transition: 0.3s;
-      height: 100%;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-    }
-
-    .suit-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-    }
-
-    .suit-card img {
-      width: 100%;
-      height: 260px;
+    img {
+      height: 200px;
       object-fit: cover;
-      border-bottom: 2px solid #ffd70044;
-    }
-
-    .card-body h5 {
-      color: #ffd700;
-      font-weight: 700;
-    }
-
-    .card-body p {
-      color: #fca5a5;
-      font-size: 14px;
-    }
-
-    /* GLOW EFFECT */
-    .suit-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 15px;
-      background: linear-gradient(120deg, transparent, rgba(255,215,0,0.15), transparent);
-      opacity: 0;
-      transition: 0.4s;
-    }
-
-    .suit-card:hover::before {
-      opacity: 1;
-    }
-
-    /* FOOTER */
-    .footer {
-      text-align: center;
-      padding: 20px;
-      color: #fca5a5;
-      margin-top: 30px;
-      border-top: 1px solid #ffd70033;
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <section class="hero">
-    <div class="container">
-      <h1>IRON MAN SUITS</h1>
-      <p>Red & Gold Armory Collection</p>
-    </div>
-  </section>
+  <h1>Iron Man Suits</h1>
 
-  <!-- GALLERY -->
-  <section class="pb-5">
-    <div class="container">
-      <div class="row g-4">
+  <div class="container">
+    <div class="row g-4">
 
-        <div class="col-md-4">
-          <div class="suit-card position-relative">
-            <img src="https://via.placeholder.com/400x260?text=Mark+I">
-            <div class="card-body p-3">
-              <h5>Mark I</h5>
-              <p>First prototype built in cave.</p>
-            </div>
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Mark+I" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Mark I</h5>
+            <p class="card-text">First prototype suit</p>
           </div>
         </div>
-
-        <div class="col-md-4">
-          <div class="suit-card position-relative">
-            <img src="https://via.placeholder.com/400x260?text=Mark+III">
-            <div class="card-body p-3">
-              <h5>Mark III</h5>
-              <p>First red-gold combat suit.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="suit-card position-relative">
-            <img src="https://via.placeholder.com/400x260?text=Mark+V">
-            <div class="card-body p-3">
-              <h5>Mark V</h5>
-              <p>Portable suitcase armor.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="suit-card position-relative">
-            <img src="https://via.placeholder.com/400x260?text=Hulkbuster">
-            <div class="card-body p-3">
-              <h5>Hulkbuster</h5>
-              <p>Heavy armor for Hulk combat.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="suit-card position-relative">
-            <img src="https://via.placeholder.com/400x260?text=Mark+L">
-            <div class="card-body p-3">
-              <h5>Mark L</h5>
-              <p>Nanotech armor (Infinity War).</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="suit-card position-relative">
-            <img src="https://via.placeholder.com/400x260?text=Mark+85">
-            <div class="card-body p-3">
-              <h5>Mark LXXXV</h5>
-              <p>Final Endgame suit.</p>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    Stark Industries • Red & Gold Interface
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Mark+III" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Mark III</h5>
+            <p class="card-text">First red-gold suit</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Hulkbuster" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Hulkbuster</h5>
+            <p class="card-text">Heavy combat armor</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </body>
